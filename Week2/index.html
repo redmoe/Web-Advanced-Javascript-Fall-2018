@@ -40,8 +40,8 @@
 		elem.innerHTML = name;
 		elem.style.position="relative";
 		elem.id = f;
-		elem.style.width=2500-(f*50)+"px";
-		elem.style.height=2500-(f*50)+"px";
+		elem.style.width=100-(f*2)+"vw";
+		//elem.style.height=100-(f*2)+"vw";
 		elem.style.background= 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
 		document.getElementById(lastPar).appendChild(elem);
 		lastPar = elem.id;
@@ -61,14 +61,14 @@
 		// 	for (var l = 0; l < 2; l++) {
 		// 		var eleme = document.createElement("div");
 		// 		eleme.style.position="relative";
-		// 		eleme.style.width=10+"px";
-		// 		eleme.style.height=10+"px";	
+		// 		eleme.style.width=10+"vw";
+		// 		eleme.style.height=10+"vw";	
 		// 		eleme.style.background="black";		
 		// 		if (l==0) {
-		// 			eleme.style.left=10*k+(2500-(f*50))+"px";			
+		// 			eleme.style.left=10*k+(2500-(f*50))+"vw";			
 		// 		}
 		// 		else {
-		// 			eleme.style.top=10*k+(2500-(f*50))+"px";			
+		// 			eleme.style.top=10*k+(2500-(f*50))+"vw";			
 		// 		}
 		// 		document.getElementById(lastPar).appendChild(eleme);
 		// 	}
@@ -86,8 +86,8 @@
 
 	// 	var style = "";
 	// 	if (typeof myArray[i][1] == "number") {
-	// 		style = 'style"font-size:'+myArray[i][1]+'px;"';
-	// 		//elem.innerHTML = `<h1 style="font-size:{$myArray[i][1]}px;">${myArray[i][0]}</h1>`;
+	// 		style = 'style"font-size:'+myArray[i][1]+'vw;"';
+	// 		//elem.innerHTML = `<h1 style="font-size:{$myArray[i][1]}vw;">${myArray[i][0]}</h1>`;
 	// 	}
 	// 	else {
 	// 		elem.innerHTML = `<h1 class=$myArray[i][1]>${myArray[i][0]}</h1>`;
@@ -118,4 +118,5 @@
 </html>
 
 <!-- On Page 79 Anni Albers states that price and limitation can actually be very conducive to the creative process, as otherwise the amount of choices overwhelms us. When in your creative work has a constrantit made you devise a way to make the project better than it would have been? -->
+
 <!-- Kathy Acker descirbes body building as being often about failure, failure bing the goal of exercise. Is there another thing you do in daily life that you can think of where the goal is to fail? -->

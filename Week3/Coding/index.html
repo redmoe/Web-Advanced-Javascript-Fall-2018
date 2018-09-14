@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	html {
+		background-color:black;
+	}
+	html,body,div{
+		padding: 0;
+		margin:0;
+		font-size:0;
+	}
+	.container {
+
+		position: relative;
+		display: inline-block;
+		width:10vw;
+		height:10vw;
+	}
+	.circle {
+		position: absolute;
+		border-radius: 50%;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+	}
+	#wrapper {
+		width:100vw;
+	}
+</style>
+</head>
+<body>
+	<div id="wrapper"></div>
+	<script type="text/javascript">
+		var circleDiameter = 1;
+		var direction = false;
+		var totalLength = 100;
+		for (var i = 0; i < totalLength ; i++) {
+			var container = document.createElement("div");
+			// circleDiameter++;
+			// if (i % 5  == 0) {
+			// 	circleDiameter = 1;
+			// }
+			if (i % 5  == 0) {
+				if (!direction) {
+					circleDiameter = 1;
+				}
+				direction = !direction;
+			}
+			if (direction) {
+				circleDiameter++
+			}
+			else {
+				circleDiameter--;	
+			}
+			
+			container.className = "container";
+
+			//circleDiameter = (Math.cos(i) * 10)+10;
+
+			var percentage = circleDiameter/5;
+			var progress = i/(totalLength-1);
+			//console.log(progress);
+			var red = (255-(progress*255));
+			var blue=  (progress*255);
+
+			var color = "rgb(" + red + ",0,"+ blue + ")";
+
+			container.innerHTML = `
+				<div style="background-color: ${color};  opacity:${percentage}; width:${circleDiameter}vw; height:${circleDiameter}vw;" class="circle"></div>
+			`;
+			document.getElementById("wrapper").appendChild(container);
+		}
+	</script>
+</body>
+</html>
