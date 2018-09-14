@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css"><
+	}
+	html {
+		background-color: red;
+	}
+	.newHeader {
+		color: green;
+		font-weight:300;
+		font-family: monospace;
+		font-style: normal;
+	}
+
+	.newBlue {
+		color: blue;
+	}	
+</style>
+
+</head>
+<body>
+	<div id="wrapper">
+	
+</div>
+<script type="text/javascript">
+	var lastPar = "wrapper";
+	for (var f = 0; f < 50; f++) {
+
+		var elem = document.createElement("button");
+		//elem.className = "newHeader";
+		var name = "";
+		for (var c = 0; c < f; c++) {
+			name += "No ";
+		}
+		name += "Pick me!";
+		elem.innerHTML = name;
+		elem.style.position="relative";
+		elem.id = f;
+		elem.style.width=2500-(f*50)+"px";
+		elem.style.height=2500-(f*50)+"px";
+		elem.style.background= 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+		document.getElementById(lastPar).appendChild(elem);
+		lastPar = elem.id;
+		elem.onclick = function () {
+				var doc = document.getElementById(this.id);
+				if (doc.style.background == "black") {
+					doc.style.background = doc.col;
+				}
+				else {
+					doc.col = doc.style.background;
+					doc.style.background="black";
+				}
+				console.log("YEP!");
+		};
+	//	var rand = Math.floor(Math.random() * 10);
+		// for (var k = 0; k < rand; k++) {
+		// 	for (var l = 0; l < 2; l++) {
+		// 		var eleme = document.createElement("div");
+		// 		eleme.style.position="relative";
+		// 		eleme.style.width=10+"px";
+		// 		eleme.style.height=10+"px";	
+		// 		eleme.style.background="black";		
+		// 		if (l==0) {
+		// 			eleme.style.left=10*k+(2500-(f*50))+"px";			
+		// 		}
+		// 		else {
+		// 			eleme.style.top=10*k+(2500-(f*50))+"px";			
+		// 		}
+		// 		document.getElementById(lastPar).appendChild(eleme);
+		// 	}
+		// }
+	}
+
+	
+	// var myArray = [["hello",".blue"],["far",5],["burger",8],["taco",10]];
+
+	// for (var i = myArray.length - 1; i >= 50; i--) {
+	// 	myArray[i]
+
+	// 	var elem = document.createElement("div");
+	// 	elem.className = "newHeader";
+
+	// 	var style = "";
+	// 	if (typeof myArray[i][1] == "number") {
+	// 		style = 'style"font-size:'+myArray[i][1]+'px;"';
+	// 		//elem.innerHTML = `<h1 style="font-size:{$myArray[i][1]}px;">${myArray[i][0]}</h1>`;
+	// 	}
+	// 	else {
+	// 		elem.innerHTML = `<h1 class=$myArray[i][1]>${myArray[i][0]}</h1>`;
+
+	// 	}
+	// 	elem.innerHTML = ` `
+	// 	document.getElementById("wrapper").appendChild(elem);
+	// }
+
+
+	// var element = document.createElement("h1");
+	// element.className = "newHeader";
+	// var textNode = document.createTextNode("some text");
+
+	// element.appendChild(textNode);
+	// element.innerHTML="some textery";
+	// var myVar = "JFAS";
+	// var mySec = "FJJJ"
+	// element.innerHTML= `
+	// <h1>${myVar}</h1>
+	// <h2>${mySec + " " + myVar}</h2>`
+	// ;
+	// document.getElementById("wrapper").appendChild(element);
+
+
+</script>
+</body>
+</html>
+
+<!-- On Page 79 Anni Albers states that price and limitation can actually be very conducive to the creative process, as otherwise the amount of choices overwhelms us. When in your creative work has a constrantit made you devise a way to make the project better than it would have been? -->
+<!-- Kathy Acker descirbes body building as being often about failure, failure bing the goal of exercise. Is there another thing you do in daily life that you can think of where the goal is to fail? -->
