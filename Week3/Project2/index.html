@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css"><
+	}
+	html {
+		background-color:black;
+	}
+	.newHeader {
+		color: green;
+		font-weight:300;
+		font-family: monospace;
+		font-style: normal;
+	}
+
+	.newBlue {
+		color: blue;
+	}	
+</style>
+</head>
+<body>
+	<div id="wrapper">
+</div>
+<script type="text/javascript">
+	var lastPar = "wrapper";
+	var circleDiameter = 1;
+	var direction = false;
+	var totalLength = 100;
+
+	for (var f = 0; f < totalLength; f++) {
+
+		var elem = document.createElement("button");
+		var name = "";
+		for (var c = 0; c < f; c++) {
+			name += "No ";
+		}
+		name += "Pick me!";
+		elem.innerHTML = name;
+		elem.style.position="relative";
+		elem.id = f;
+		elem.style.width=100-(f*2)+"vw";
+
+
+		if (f % 5  == 0) {
+			if (!direction) {
+				circleDiameter = 1;
+			}
+			direction = !direction;
+		}
+		if (direction) {
+			circleDiameter++
+		}
+		else {
+			circleDiameter--;	
+		}
+		
+		var percentage = circleDiameter/5;
+		var progress = f/(totalLength-1);
+		var green = (255-(progress*255));
+		var blue=  (progress*255);
+		elem.style.background= "rgb(0," + green + "," + blue + ")";
+		elem.style.color= "rgb("+(255-blue)+","+ (255-green) + ",0 )";
+		console.log(green);
+
+
+		// elem.style.background= 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+		document.getElementById(lastPar).appendChild(elem);
+		lastPar = elem.id;
+		elem.onclick = function () {
+			var doc = document.getElementById(this.id);
+			if (doc.style.background == "black") {
+				doc.style.background = doc.col;
+			}
+			else {
+				doc.col = doc.style.background;
+				doc.style.background="black";
+			}
+		};
+	}
+</script>
+</body>
+</html>
+
