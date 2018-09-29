@@ -1,0 +1,69 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div> id = "wrapper"</div>
+	<script type="text/javascript">
+		var myVar = 7;
+		var mySecondVar = 4;	
+		var myFunction = function () {
+			console.log("testing");
+		}
+		myFunction();
+		var thisInstance = myFunction(myVar,mySecondVar);
+		var anotherInstance = myFunction(thisInstance,thisInstance);
+		console.log(anotherInstance);
+
+		var myObject = {
+			"location":"Central Park",
+			"season":"Autumn",
+			"treeamount":100,
+			"extra function" : function () {
+				console.log(myObject.season)
+			}		
+		};
+		console.log(myObject.season[0]);
+	</script>
+</body>
+</html>
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title></title>
+		<script src="jquery-3.3.1.min.js"></script>
+
+</head>
+<body>
+	<div id="wrapper" class="aClass"></div>
+	<script type="text/javascript">
+		
+
+		$(document).ready(function(){
+			myFunction("Greetings");
+		myVar = "Greetings!";
+		$(".aClass").html("Hello!");
+		var color = "#0ff";
+		$("#wrappper".css({"background-color":"red",
+							"color":"white"}));
+
+		$(".anotherClass").click {
+			$(this).toggleClass("clicked");
+		}
+		$(".anotherClass").each(function() {
+
+			if($(this.html) % 2) {
+
+			}
+			else {
+				$(this).html("goodbye");
+			}
+		})
+		})
+	</script>
+</body>
+</html>

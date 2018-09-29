@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+	</title>
+			<meta charset="utf-8">
+
+	<style type="text/css">
+		html,body {
+			padding: 0;
+			margin: 0;
+			font-size: 15;
+			text-align:center;
+		}
+		.weather {
+			font-size:20;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrapper"></div>
+	<script type="text/javascript">
+		//for (var i = 0; i < 10; i--) {
+			// if (i == "hello") {
+
+			// }
+		//	console.log("for"+i);
+		//}
+		//var k = 0
+		//while (k < 10) {
+		//	console.log("whie"+k);
+		//	k++;
+		//}
+		// var interval = 2;
+		// var counter = 0;
+		// setTimeout(function(){},1000);
+		// for (var i = 0; i < 50; i++) {
+		// 	setTimeout(function(){
+		// 		console.log("hello!",counter);
+		// 		counter++;
+		// 	},interval);
+		// 	interval*=2;
+		// 	//interval+=100;
+		// }
+	
+		// var randomNumber = Math.floor(Math.random()*10)
+
+		var interval = 0,
+			counter = 0;
+		for (var i = 0; i < 100; i++) {
+			setTimeout(function(){
+				var weather = document.createElement("di");
+				weather.clasName = "weather";
+
+				var snow = "";
+
+				for (var s = 0; s < 10; s++) {
+					var snowOrRain = Math.round(Math.random()*9);
+					if (snowOrRain <= 3) {
+						snow += " ";
+					}	
+					else if (snowOrRain <= 6) {
+						snow += "💧";
+					}
+					else {
+						snow+="❄️";
+					}
+					console.log(snow);
+				}
+				weather.innerHTML = snow;
+				window.scrollTo(0,document.body.scrollHeight);
+				document.getElementById("wrapper").appendChild(weather);
+				counter++;
+			},interval);
+			interval+=100;
+		}
+	</script>
+</body>
+</html>
