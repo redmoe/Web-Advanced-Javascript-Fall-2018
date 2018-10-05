@@ -5,101 +5,234 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css"><
-	}
-	html {
+	
+/*	html {
 		background-color:black;
+	}*/
+	body {
+		background-color:#f4d1a4;
 	}
-	.newHeader {
-		color: green;
-		font-weight:300;
-		font-family: monospace;
-		font-style: normal;
-	}
+	h1.counter {
+    	text-align: center;
+    			width: 100vw;
+    			    position: absolute;
+/*    align-content: center;
+*/ 	/*   color: blue;
+    	margin: auto;
+   		 width: 20%;*/
+    }
 
-	.newBlue {
-		color: blue;
+	.foundWrong {
+		text-decoration: line-through;
+		background-color: red;
+	}
+	.foundRight {
+		background-color: 	#7CFC00 ;
+		font-weight:bold;
 	}	
-	.wrapper {
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
+	.container {
+		display:flex;
+		width: 100vw;
+		background: white;
+/*            justify-content: space-between;
+*/
+	}
+	.container button {
+		 float: left;
+		 flex-grow:1;
+	}
+	button {
+				  background: 	#FAEBD7;	
+
+	}
+	.base:hover { 
+    	background-color: #FFEBCD;
+    	 cursor: pointer;
 	}
 </style>
 </head>
 <body>
-	<div id="wrapper">
+	<div id="wrapper"><div id="buttons"></div></div>
 </div>
 <script type="text/javascript">
-	var lastPar = "wrapper";
+		var lastPar = document.getElementById("buttons");
+		var wrapper =  document.getElementById("wrapper");
+		var UIcontainer = document.createElement("div");
+		UIcontainer.className = "container"
+		wrapper.appendChild(UIcontainer);
+
+
+		var timer = document.createElement("h1");
+		UIcontainer.appendChild(timer);
+
+		var score = document.createElement("h1");
+		score.className = "counter";
+		UIcontainer.appendChild(score);
+	//score.className = "counter";
+
+
+	var rightAnswers = 0;
+	var totalAnswers = 0;
+	function Score (answer) {
+		//counter.innerHTML = rightAnswers + "/" + totalAnswers;
+	//	console.log(counter);
+		if (answer > 0) {
+			rightAnswers += answer;
+		}
+		score.innerHTML = rightAnswers + " points";
+		console.log(rightAnswers + "/" + totalAnswers);
+
+		timeLeft +=answer;
+		ClockUpdate();
+	}
+	var timeLeft = 300;
+
+	//setInterval(Timer(),1);
+	function Timer () {
+		timeLeft--; 
+
+		if (timeLeft <= 0) {
+			GameOver();
+			timeLeft = 0;
+			return;
+		}
+		else {
+		 setTimeout(Timer,1000);
+		}
+		ClockUpdate(); 
+
+
+	}
+
+	function ClockUpdate () {
+		if (timeLeft <= 0) {
+			timer.innerHTML =  "0:00";   
+			return;
+		}
+
+		var hours = Math.floor(timeLeft / 60);  
+		var minutes = timeLeft % 60;
+		if (minutes.toString().length < 2) {
+			minutes = "0" + minutes;
+		}
+		timer.innerHTML = hours + ":" + minutes;   
+	}
+
 	var circleDiameter = 1;
 	var direction = false;
 	var totalLength = 100;
 	var counter = 1;
 	var theRightOne = 0;
 	var dive;
-	CheckIfPressed ();
-	console.log("HHHE");
+	var buttonHeight = 1;
+	//var buttonSize = 0;
+	var highestButton = 0;
+	NewButton();
+
+//	console.log("HHHE");
+	//setTimeout(CreateButtonRight,timeLeft);
+	function GameOver () {
+		timer.innerHTML = "GAME OVER!";
+		score.innerHTML = "FINAL SCORE: " + rightAnswers;
+
+		lastPar.parentNode.removeChild(lastPar);
+		console.log("GAME OVER");
+	}
 	function NewButton () {
 		dive = document.createElement("div");
+		dive.className = "container";
+
 	 	dive.id = counter;
-		document.getElementById(lastPar).appendChild(dive);
+		lastPar.appendChild(dive);
 		theRightOne = Math.floor(Math.random()*counter);
 		//dive.style.position="relative";
-		dive.className = "wrapper";
+		//dive.className = "wrapper";
+	//	buttonSize = 100/counter;
 		for (var c = 0; c < counter; c++) {
-			if (c==theRightOne) {
-				setTimeout(CreateButtonRight,c*100);
+			var randTime = c*100*Math.floor(Math.random()+10);
+		//	randTime = 0;
+				console.log(counter);
 
+			if (c==theRightOne) {
+				setTimeout(CreateButtonRight,randTime);
 			}
 			else {
-				setTimeout(CreateButton,c*100*Math.floor(Math.random()+10));
+				setTimeout(CreateButtonWrong,randTime);
 			}
 		}
 		counter++;
 	};
 	function ButtonWrong () {
+		Score(-10);
 		var doc = this;
-		doc.style.background = ("rgb(255,0,0)");
-
+	//	doc.style.background = ("rgb(255,0,0)");
+		doc.className = "foundWrong";
 	}
 	function CheckIfPressed () {
+		if (counter==2) {
+							Timer();
+
+		}
 		if (counter != 1 ) {
-			console.log(this);
+		//	console.log(this);
 			var doc = this;
 			if (doc.boolCheck == null) {
-				console.log(doc);
-				doc.style.background = ("rgb(0,255,0)");
+			//	console.log(doc);
+				doc.className = "foundRight";
 				NewButton();
+			//	rightAnswers++;
+				totalAnswers++;
+				Score(10);
 			}
 			doc.boolCheck = true;
 		} 
-		else if (counter == 1) {
-			NewButton();
-		}
+		
+		//else if (counter == 1) {
+			
+			//
+			//console.log("OOFF");
+			//NewButton();
+	//	}
 	}
+
+
 	function CreateButtonRight () {
+				//Score();
+
 		var name = "";
 		name += "Do ";
 		var elem = document.createElement("button");
-		var nume = 	Math.floor(Math.random()*counter);  
-		console.log(nume);
-		for (var f = 0; f < nume; f++) {
-			name +="not ";
-		}
-		if (nume % 2 == 0) {
+		var nume = 	Math.floor(Math.random()*counter-1);  
+		if (nume > 0) {
+			for (var f = 0; f < nume; f++) {
+				name +="not ";
+			}
+			if (nume % 2 == 0) {
+				name += "not ";
+			}
 			name += "not ";
+
 		}
+		else {
+			console.log(nume);
+		}
+		
 		elem.onclick = CheckIfPressed;
-		name += "not ";
 		name += "click me!";
 		//elem.id = new Date();
 		elem.innerHTML = name;
 		dive.appendChild(elem);
 		window.scrollTo(0,document.body.scrollHeight);
+		elem.className = "base";
 
-
+	//	elem.style.width = buttonSize+"vw";
+		// console.log(elem.offsetHeight);
+		//  if (elem.offsetHeight > buttonHeight) {
+		// 	buttonHeight = elem.offsetHeight ;
+		//  }
+		//  elem.offsetHeight = buttonHeight;
 	}	
-	function CreateButton () {
+	function CreateButtonWrong () {
 		var name = "";
 		name += "Do ";
 		var elem = document.createElement("button");
@@ -117,8 +250,15 @@
 		elem.innerHTML = name;
 		dive.appendChild(elem);
 		elem.onclick = ButtonWrong;
-							window.scrollTo(0,document.body.scrollHeight);
+		elem.className = "base";
+		window.scrollTo(0,document.body.scrollHeight);
+	//	elem.style.width = buttonSize+"vw";
 
+
+		 // if (elem.offsetHeight > buttonHeight) {
+			// buttonHeight = elem.offsetHeight ;
+		 // }
+		 // elem.offsetHeight = buttonHeight;
 	}
 
 	// for (var f = 0; f < totalLength; f++) {
