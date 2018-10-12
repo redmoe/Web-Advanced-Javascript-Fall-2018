@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<style type="text/css"><
+		body {
+
+		}
+		.back {
+/*			  position: absolute;
+		    background-color: lightblue;
+		    width:100%;
+		    height: 100%;*/
+
+		}
+		h1 {
+			color:#fff1e8;
+			font-family: 'Pacifico', cursive;
+
+		}
+		h2 {
+			color:#fff1e8;
+		   	font-family: 'Roboto', sans-serif;
+		}
+		.foundWrong {
+			text-decoration: line-through;
+			background-color: #ff004d;
+		}
+		.foundRight {
+			background-color: #00e436;
+			font-weight:bold;
+		}	
+		.container {
+			display:flex;
+			width: 99vw;
+			background: red;
+		}
+		.container button {
+		 	font-family: 'Roboto', sans-serif;
+			float: left;
+			flex-grow:1;
+		}
+		button {
+/*			color:#1d2b53;
+*/			background: #c2c3c7;	
+		}
+		.base:hover { 
+	    	background-color: #fff1e8;
+	    	 cursor: pointer;
+		}
+		.center {
+			text-align:center;
+		}
+	</style>
+</head>
+<body  bgcolor="#7e2553">
+		<div class="back">
+		
+	</div>
+	<div id="UI2" class="center"></div>
+	<div id="UI" ></div>
+	<div id="buttons"></div>
+
+<script type="text/javascript">
+
+
+	var counter, 
+		timeLeft, 
+		rightAnswers, 
+		timerColorChange, 
+		dive;
+	var theRightOne = 0;
+	var wrongButtonList = [];
+	var highScore = 0;
+	var buttonArea;
+
+
+	var buttons = document.getElementById("buttons");
+	var UIcontainer =  document.getElementById("UI");
+
+	var title = document.createElement("h1");
+
+	document.getElementById("UI2").appendChild(title);
+	title.style.fontStyle = "italic";
+
+	var timer = document.createElement("h2");
+	UIcontainer.appendChild(timer);
+	timer.style.float= "left";
+
+	var score = document.createElement("h2");
+	score.className = "counter";
+	UIcontainer.appendChild(score);
+	score.style.float= "right";
+
+	GameStart();
+
+	function GameStart () {
+		title.innerHTML = "Don't Be So -Not Negative!";
+		score.innerHTML = "";
+		timer.innerHTML = "";
+		counter = 1;
+		timeLeft = 290;
+		rightAnswers = 0;
+		buttonArea = document.createElement("div");
+		buttons.appendChild(buttonArea);		
+		NewButton();
+	}	
+
+	function Score (answer) {
+		clearTimeout(timerColorChange);
+		if (answer > 0) {
+			timer.style.color =  "#00e436";
+			rightAnswers += answer;
+		}
+		else {
+			timer.style.color = "#ff004d";
+		}
+		timerColorChange = setTimeout(function(){timer.style.color = "#fff1e8"},1000);
+
+		score.innerHTML = rightAnswers + " points";
+	//	console.log(rightAnswers + "/" + totalAnswers);
+		timeLeft +=answer;
+		ClockUpdate();
+		// if (rightAnswers > highScore) {
+		// 	score.style.color = "#00e436";
+		// }
+	}
+
+	function Timer () {
+		timeLeft--; 
+		if (timeLeft <= 0) {
+			GameOver();
+			timeLeft = 0;
+			return;
+		}
+		else {
+		 setTimeout(Timer,1000);
+		}
+		ClockUpdate(); 
+	}
+
+	function ClockUpdate () {
+		if (timeLeft <= 0) {
+			timer.innerHTML =  "0:00";   
+			return;
+		}
+		var hours = Math.floor(timeLeft / 60);  
+		var minutes = timeLeft % 60;
+		if (minutes.toString().length < 2) {
+			minutes = "0" + minutes;
+		}
+		timer.innerHTML = hours + ":" + minutes;   
+	}
+
+	function GameOver () {
+		title.innerHTML = "GAME OVER!";
+		if (rightAnswers > highScore) {
+			highScore = rightAnswers;
+		}
+		timer.innerHTML = "HIGH SCORE: " + highScore;
+		score.innerHTML = "FINAL SCORE: " + rightAnswers;
+
+		buttonArea.parentNode.removeChild(buttonArea);
+		var cont = document.createElement("div");
+		var playAgain = document.createElement("button");
+
+		playAgain.onclick = function(e) {this.parentNode.parentNode.removeChild(this.parentNode); GameStart()};
+		playAgain.innerHTML = "Do Play Again?";
+		buttons.appendChild(cont);
+		cont.appendChild(playAgain);
+		cont.className = "container";
+		playAgain.className = "base";
+	}
+	function NewButton () {
+		dive = document.createElement("div");
+		dive.className = "container";
+	 	dive.id = counter;
+		buttonArea.appendChild(dive);
+		theRightOne = Math.floor(Math.random()*counter);
+		for (var c = 0; c < counter; c++) {
+			var randTime = c*100*Math.floor(Math.random()+10);
+			if (c==theRightOne) {
+				setTimeout(CreateButtonRight,randTime);
+			}
+			else {
+				setTimeout(CreateButtonWrong,randTime);
+			}
+		}
+		counter++;
+	};
+	function ButtonWrong () {
+		Score(-10);
+		this.className = "foundWrong";
+	}
+	function ButtonRight () {
+		if (counter==2) {
+			Timer();
+		}
+		if (counter != 1 ) {
+			var doc = this;
+			if (doc.boolCheck == null) {
+				doc.className = "foundRight";
+				for (var c = 0; c < wrongButtonList.length; c++) {
+					wrongButtonList[c].className = "foundWrong";
+				}
+				wrongButtonList = [];
+				NewButton();
+				Score(10);
+			}
+			doc.boolCheck = true;
+		} 
+	}
+	function CreateButtonRight () {
+		var name = "";
+		name += "Do ";
+		var elem = document.createElement("button");
+		var nume = 	Math.floor(Math.random()*counter-1);  
+		if (nume > 0) {
+			for (var f = 0; f < nume; f++) {
+				name +="not ";
+			}
+			if (nume % 2 == 0) {
+				name += "not ";
+			}
+			name += "not ";
+
+		}
+		elem.onclick = ButtonRight;
+		name += "click me!";
+		elem.innerHTML = name;
+		dive.appendChild(elem);
+		window.scrollTo(0,document.body.scrollHeight);
+		elem.className = "base";
+	}	
+	function CreateButtonWrong () {
+		var name = "";
+		name += "Do ";
+		var elem = document.createElement("button");
+		var nume = 	Math.floor(Math.random()*counter+1);  
+		for (var f = 0; f < nume; f++) {
+			name +="not ";
+		}
+		if (nume % 2 == 0  && nume != 0) {
+			name += "not ";
+		}
+		name += "click me!";
+		elem.innerHTML = name;
+		dive.appendChild(elem);
+		elem.onclick = ButtonWrong;
+		elem.className = "base";
+		window.scrollTo(0,document.body.scrollHeight);
+		wrongButtonList.push(elem);
+	}
+</script>
+</body>
+</html>
