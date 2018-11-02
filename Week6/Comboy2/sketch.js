@@ -12,7 +12,7 @@
 
 	var noises = [];
 	var intros = [];
-	var bestOf = 2;
+	var bestOf = 5;
 	function preload () {
 		mainFont = loadFont("assets/Hyperspace Bold.otf");
 		noises[0] = loadSound('assets/ping_pong_8bit_plop.ogg');
