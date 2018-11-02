@@ -684,4 +684,4 @@ function draw() {
 				// 	this.sprite.height  -= grid/8;
 				// 	rect(this.sprite.position.x,this.sprite.position.y+grid/2,grid,this.sprite.height);					
 				// }			
-			//	rotate(-this.sprite.rotation);	
+			//	rotate(-this.sprite.rotation);		//var spriteGroup;
