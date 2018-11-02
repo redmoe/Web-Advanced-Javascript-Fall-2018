@@ -26,6 +26,7 @@
 
 	function setup() {
 		grid = Math.min((window.innerWidth || document.body.clientWidth)-20,1280)/gridSize.x;
+		//grid = 640/gridSize.x;
 		var cnv = createCanvas(grid*gridSize.x, grid*gridSize.y);
 
 		cnv.style('display', 'block');
@@ -164,7 +165,7 @@
 			}
 			else if (this.form == "Snake") {
 				if (ball.sprite.bounce(this.sprite) || ball.sprite.bounce(	this.cells)) {
-					ball.SpeedUp();
+					//ball.SpeedUp();
 				}				
 				return;
 				fill(this.color);
