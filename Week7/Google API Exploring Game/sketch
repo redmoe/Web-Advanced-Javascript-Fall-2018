@@ -1,0 +1,205 @@
+     var playerMoveMarker;
+        var food = 100;
+        var locationClicked;
+        var locations = [];
+        var text = "Hello!";
+        var numDeltas = 1000;
+    var delay = 10; //milliseconds
+    var deltaLat;
+    var deltaLng;
+    var moveSpeed = 0.01;
+    var currentPosition = [0,0];
+    var newPosition = [0,0];
+    var map, infoWindow;
+    var playerMarker;
+    var tranDone = false;
+
+    var moving = null;
+    var distanceMoved = 0;
+    var placesService;
+    function Distance (pointA, pointB) {
+        var a = pointA[0] - pointB[0];
+        var b = pointA[1] - pointB[1];
+        var dist = Math.sqrt( a*a + b*b );
+        return dist;
+
+    }
+    function transition(event){
+        if (playerMoveMarker) {
+            playerMoveMarker.setMap(null);
+        }   
+        playerMoveMarker = new google.maps.Marker({position: event.latLng, map: map, label:"B",title:"Moving To"}); 
+        newInf = new google.maps.InfoWindow({position: event.latLng,content:"HE::"});
+        playerMoveMarker.infor = newInf;
+        var result = [event.latLng.lat(), event.latLng.lng()];
+
+        if (moving) {
+            clearTimeout(moving);
+            moving = null;
+        }
+        numDeltas = Distance(result,currentPosition);
+        newPosition = result;
+        deltaLat = ((result[0] - currentPosition[0])/numDeltas)*moveSpeed;
+        deltaLng = ((result[1] -  currentPosition[1])/numDeltas)*moveSpeed;
+        console.log(numDeltas);
+        moveMarker();
+    }
+
+    function moveMarker(){
+    //    console.log(currentPosition);
+       // console.log(tranDone);
+       currentPosition[0] += deltaLat;
+       currentPosition[1] += deltaLng;
+       var latlng = new google.maps.LatLng(currentPosition[0], currentPosition[1]);
+       playerMarker.setTitle("Latitude:"+currentPosition[0]+" | Longitude:"+currentPosition[1]);
+       playerMarker.setPosition(latlng);
+       infoWindow.setPosition(latlng);
+
+       dist = Distance(newPosition,currentPosition);
+       distanceMoved += dist;
+
+       console.log(dist);
+       // $( "#text" ).text("You have traveled " + Math.round(distanceMoved/70) + " miles");
+       UpdateStats();
+       if (dist < 0.01) {
+        var latlng = new google.maps.LatLng(newPosition[0], newPosition[1]);
+        playerMarker.setPosition(latlng);
+        if (locationClicked) {
+            if (locationClicked.foodStored != null) {
+                food+=locationClicked.foodStored;
+                UpdateStats();
+                $( "#text" ).text("You found " + locationClicked.foodStored + " cans of food");
+                locationClicked.foodStored = null;
+            }
+            else {
+                $( "#text" ).text("Nothing left to scavange");
+            }
+            map.removeMarker(locationClicked)
+               // locationClicked.SetMap(null);
+
+           }
+       }
+        //if(i!=numDeltas){
+            else {
+                moving = setTimeout(moveMarker, delay);
+            }
+        }
+        function UpdateStats () {
+            infoWindow.setContent ("MOVED" + Math.round(distanceMoved/70));
+            $( "#text" ).text("You have traveled " + Math.round(distanceMoved/70) + " miles");
+            $( "#foodText" ).text(food + " food");
+
+        }
+
+
+
+        function initMap() {
+            $( "#text" ).text(text);
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: -34.397, lng: 150.644},
+              zoom: 4,
+              disableDefaultUI: true,
+              zoomControl: true,
+              zoomControlOptions: {
+                 position: google.maps.ControlPosition.BOTTOM_CENTER
+             },
+             styles: [
+             {
+                 featureType: 'water',
+                 elementType: 'geometry',
+                 stylers: [{color: '#ffa300'}]
+             },
+             {
+                 featureType : 'landscape.natural',
+                 elementType : 'geometry.fill',
+                 stylers : [{color: '#83769c'}]
+             },
+             {
+                 featureType : 'landscape.natural',
+                 elementType : 'geometry.stroke',
+                 stylers : [{color: '#ea00d9'}]
+             },
+             {featureType: "road",elementType: "labels",stylers: [{visibility: "off"}]},  
+             {
+                 featureType: "road",
+                 elementType: "geometry",
+                 stylers: [{visibility: "off"}
+                 ]
+             },
+             {
+              featureType:"all",elementType:"labels",stylers: [{visibility: "off"}],  
+          },
+          {
+              featureType:"poi",elementType:"labels",stylers: [{visibility: "on"}],  
+          }
+          ]
+      });
+            placesService = new google.maps.places.PlacesService(map);
+            
+            infoWindow = new google.maps.InfoWindow;
+            var uluru = {lat: 40, lng: -73};
+       //label:icon: 'factory_318-10162.jpg'icon:'PlayerSprite.png'
+
+       playerMarker = new google.maps.Marker({position: uluru, map: map, label:"A",title:"THIS IS YOU"});
+       playerMarker.addListener('click', function(event) { 
+        infoWindow.open(map,playerMarker);            
+    });   
+
+       var newMarker = new google.maps.Marker({position: uluru, map: map, label:"C",title:"THIS IS YOU"});
+       locations.push(newMarker);
+
+       newMarker.foodStored = 30;
+       newMarker.addListener('click', function(event) { 
+        locationClicked = this;
+        moving = transition(event);            
+    });
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+            	navigator.geolocation.getCurrentPosition(function(position) {
+            		var pos = {
+            			lat: position.coords.latitude,
+            			lng: position.coords.longitude
+            		};
+
+            		infoWindow.setPosition(pos);
+
+            		infoWindow.setContent('Location found. You are at: ' + position.coords.latitude + ", " + position.coords.longitude);
+            		infoWindow.open(map);
+            		map.setCenter(pos);
+                    playerMarker.setPosition(pos);
+                    currentPosition = [pos.lat,pos.lng];
+                    tranDone = true;
+
+                }, function() {
+                  handleLocationError(true, infoWindow, map.getCenter());
+              });
+            } else {
+              // Browser doesn't support Geolocation
+              handleLocationError(false, infoWindow, map.getCenter());
+          }
+          map.addListener('click', function(event) {
+              if (event.placeId) {
+                console.log(event);
+                console.log('You clicked on place:' + event.placeId);
+                getPlaceInformation(event.placeId);
+            }
+            moving = transition(event);
+
+        });
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      	infoWindow.setPosition(pos);
+      	infoWindow.setContent(browserHasGeolocation ?
+      		'Error: The Geolocation service failed.' :
+      		'Error: Your browser doesn\'t support geolocation.');
+      	infoWindow.open(map);
+      }
+      function getPlaceInformation (placeId) {
+        //NEED PLACES TO ACCESS
+        var me = this;
+     //   return;
+     placesService.getDetails({placeId: placeId}, function(place, status) {
+      console.log(place);
+  });
+ }

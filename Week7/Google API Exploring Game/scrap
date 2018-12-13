@@ -1,0 +1,132 @@
+      // var lastRender = 0
+      // window.requestAnimationFrame(loop)
+
+
+                    // var marker = new google.maps.Marker({
+                    //  position: pos,
+                    //  map: map,
+                    //  title: 'GREETINGS'
+                    // });
+       //   console.log(event.pa);
+       //   console.log(event.latlng)
+       //playerNewPos = event.pa;
+      // console.log(   map.getProjection().fromPointToLatLng(new google.maps.Point(event.pa.x, event.pa.y)));
+
+       //   map.setZoom(8);
+      // playerMarker.setPosition(map.getProjection().fromPointToLatLng(new google.maps.Point(event.pa.x, event.pa.y)));
+       //new google.maps.Marker({position: map.getProjection().fromPointToLatLng(new google.maps.Point(event.pa.x, event.pa.y)), map: map, label:"TEST"});
+
+    //  playerNewPos = map.getProjection().fromPointToLatLng(new google.maps.Point(event.pa.x, event.pa.y))
+      // playerMarker.setPosition( {lat: event.pa.x, lng: event.pa.y});
+
+ // var playerNewPos;
+ //   function update(progress) {
+ //        //console.log(progress);
+ //        if (playerMarker) {
+ //            if (playerNewPos) {
+ //                var currentPos = playerMarker.getPosition();
+ //                //console.log(currentPos.lat());
+ //                var easing = 10000;
+ //                var dx = currentPos.lat() - playerNewPos.lat();
+ //                var dy = currentPos.lng() - playerNewPos.lng();
+ //              //  var nx = currentPos.lat() + (dx*easing);
+ //              var  angle = Math.atan2(dy, dx);
+ //              // console.log(angle);
+ //              // / console.log("CUR" + currentPos.lat());
+ //               // console.log("NEW" + playerNewPos.lat());
+ //               var xVelocity = easing * Math.cos(angle);
+ //               var yVelocity = easing * Math.sin(angle);
+ //                //console.log(xVelocity);
+ //                console.log(xVelocity);
+ //                //console.log(nx);
+ //              //  nx = map.getProjection().fromPointToLatLng(new google.maps.Point(nx, 0))
+ //              //   playerMarker.setPosition({lat:100345
+ //                    //,lng:200});
+ //                    playerMarker.setPosition({lat:30,lng:200});
+ //                    console.log(playerMarker.getPosition().lat());
+
+ //                ///playerMarker.setPosition(map.getProjection().fromPointToLatLng(new google.maps.Point(nx, 0)));
+ //            }
+ //        }
+ //    }
+ //    function loop(timestamp) {
+ //        var progress = timestamp - lastRender
+ //        update(progress)
+ //        lastRender = timestamp
+ //        window.requestAnimationFrame(loop)
+ //    }          // if (status === 'OK') {
+          //   me.infowindow.close();
+          //   me.infowindow.setPosition(place.geometry.location);
+          //   me.infowindowContent.children['place-icon'].src = place.icon;
+          //   me.infowindowContent.children['place-name'].textContent = place.name;
+          //   me.infowindowContent.children['place-id'].textContent = place.place_id;
+          //   me.infowindowContent.children['place-address'].textContent =
+          //       place.formatted_address;
+          //   me.infowindow.open(me.map);
+          // }
+                //  var foundText = "You found ";
+        // if (foundStuff.length == 0) {
+        //     foundText += "nothing!";
+
+        // }
+        // else {
+        //     for (var i = 0; i < foundStuff.length; i++) {
+        //         // if (i == foundStuff.Length-1 && foundStuff.Length > 1) {
+        //         //     foundText += " and ";
+        //         // }
+        //         foundText += foundStuff[i]
+        //         if (i != foundStuff.length-1) {
+        //             foundText+=",";
+        //         }
+        //     } 
+        //     foundText+=".";
+        // }      
+
+    // if (locationClicked) {
+    //     if (locationClicked.foodStored != null) {
+    //         food += locationClicked.foodStored;
+    //         UpdateStats();
+    //         $("#text").text("You found " + locationClicked.foodStored + " cans of food");
+    //         locationClicked.foodStored = null;
+    //     } else {
+    //         $("#text").text("Nothing left to scavange");
+    //     }
+    //     map.removeMarker(locationClicked);
+    // }
+
+
+
+
+
+
+
+            // var shuffledPlaces = shuffle(placeData.types);
+            // for (var i = 0; i < 4; i++) {
+            //     if (Math.random() < .25) {
+            //         console.log("Ran");
+            //         var boolA = false;
+            //         while (boolA == false) {
+            //             var randomPlace = possiblePlaces[Math.round(Math.random()*possiblePlaces.Length)];
+            //             if (!shuffledPlaces.includes(randomPlace)) {
+            //                 boolA = randomPlace;
+            //             }
+            //         }
+            //         $("#option"+i).text(randomPlace);
+            //         $("#option"+i).attr("onclick","OptionWrong()");
+            //     }
+            //     else {
+            //         // var index = array.indexOf(5);
+            //         // if (index > -1) {
+            //         //   array.splice(index, 1);
+            //         // }
+            //         $("#option"+i).text(shuffledPlaces[i]);
+            //         $("#option"+i).attr("onclick","OptionRight()");                    
+            //     }
+            // }
+    var newMarker = new google.maps.Marker({
+        position: uluru,
+        map: map,
+        label: "C",
+        title: "THIS IS YOU"
+    });
+    locations.push(newMarker);
