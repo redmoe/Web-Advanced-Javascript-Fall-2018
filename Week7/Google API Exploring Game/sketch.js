@@ -401,11 +401,10 @@ function UntraslateText (text) {
     var newString = "";
     for (var i = 0; i < text.length; i++) {
         if (data.unknownLetters.includes (text[i].toUpperCase())) {
-            //newString += "?";
             newString += RandomLetter();
         }
         else {
-            newString += text[i].toLowerCase();
+            newString += text[i];
         }
     }
     return newString;
