@@ -2,7 +2,7 @@ var data = [];
 var playerMoveMarker;
 var locationClicked;
 var text = "Hello! Yes hi!<br><br>Huh, looks like your connected!<br><br>I’m Eou. Just landed and was hoping you could give me some directions.<br><br>Know anywhere good?<br><br>I’m in the mood for some \"FOOD DAD\". Is that how you say it?<br><br>  Just use the mouse to give me directions by clicking on locations and I’ll start moving there.";
-var message = "OK, I’ll be honest we really haven't got beyond the whole AIEOU.<br><br>And Y.<br><br>The catchy song got stuck in everyone’s head on the way over and we forgot to study the rest of the alphabet..<br><br>Let’s try to uncover the other twenty so these reviews won’t be so hard to read!";
+var message = "OK, I’ll be honest we really haven't got beyond the whole AIEOU.<br><br>And Y.<br><br>The catchy song got stuck in everyone’s head on the way over and we forgot to study the rest of the alphabet...<br><br>Let’s try to uncover the other twenty so these reviews won’t be so hard to read!";
 
 
 var numDeltas = 1000;
