@@ -95,7 +95,7 @@
 	"CashPlaces":["bank","accounting","jewelry_store","real_estate_agency","atm","lawyer"],
 	"FuelPlaces":["parking","bus_station","car_dealer","car_rental","car_repair","car_wash","subway_station","taxi_stand","train_station","transit_station","airport","gas_station"],
 	"ClothingPlaces":["department_store","laundry","shopping_mall","shoe_store","store","clothing_store"],
-	"WordPlaces":["book_store","library","school","post_office"],
+	"WordPlaces":["book_store","library","school","post_office","art_gallery"],
 	"HealthPlaces":["pharmacy","hospital","veterinary_care"],
 	"knownLetters":["a","i","e","o","u","y"],
 	"unknownLetters":["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","X","Z","W"]
