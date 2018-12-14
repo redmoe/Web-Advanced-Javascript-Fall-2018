@@ -1,7 +1,7 @@
 var data = [];
 var playerMoveMarker;
 var locationClicked;
-var text = "Hello!";
+var text = "Hello! Yes hi!<br><br>Huh, looks like your connected!<br><br>I’m Eou. I just landed and was hoping you could give me some directions.<br><br>Know anywhere good?<br><br>I’m in the mode for some \"FOOD DAD\". Is that how you say it?<br><br>  Just use the mouse to give me directions by clicking on locations and I’ll start moving there.";
 var numDeltas = 1000;
 var delay = 1; //milliseconds
 var deltaLat;
@@ -50,7 +50,7 @@ function initMap() {
         data = JSON.parse(response);
         console.log(data.PlaceList);
     });
-    $("#text").text(text);
+    $("#text").html(text);
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: -34.397,
@@ -113,7 +113,7 @@ function initMap() {
             }],
         }]
     });
-    resources = new Inventory(10,1,5,0);
+    resources = new Inventory(10,1,5,0,2);
     placesService = new google.maps.places.PlacesService(map);
 
     infoWindow = new google.maps.InfoWindow;
@@ -140,7 +140,7 @@ function initMap() {
             };
 
             infoWindow.setPosition({ lat:position.coords.latitude+.00005,lng:pos.lng});
-            infoWindow.setContent('Location found. You are at: ' + position.coords.latitude + ", " + position.coords.longitude);
+            //infoWindow.setContent('Location found. You are at: ' + position.coords.latitude + ", " + position.coords.longitude);
             infoWindow.open(map);
             map.setCenter(pos);
             playerMarker.setPosition(pos);
@@ -155,7 +155,7 @@ function initMap() {
     }
     map.addListener('click', function(event) {
         if (event.placeId) {
-            console.log('You clicked on place:' + event.placeId);
+            console.log('Clicked on place:' + event.placeId);
             nextPlaceID = event.placeId;
             event.stop();
         }
@@ -185,7 +185,7 @@ function transition(event) {
     playerMoveMarker = new google.maps.Marker({
         position: event.latLng,
         map: map,
-        label: "B",
+        label: "",
         title: "Moving To"
     });
     newInf = new google.maps.InfoWindow({
@@ -246,7 +246,7 @@ function DistCompelete(placeData) {
     if (placeData != null) {
            
         if (placeData.reviews != null) {
-            $("#descText").html("You found a echo from the old world:<br>" + (UntraslateText(placeData.reviews[0].text)).italics() + "<br>This place was a...".bold());
+            $("#descText").html("Oh you pulled up some data on this place great?<br>\[*DATA CORRUPTED*\]<br>" + (UntraslateText(placeData.reviews[0].text)).italics() + "<br>Umm, what is this place anyway?".bold());
            // $("#descText").text("You also found a echo from the old world:" + garbleText(placeData.reviews[0].text) + "I think this place used to be a...");
           
             var shuffledPlaces = shuffle(placeData.types);
@@ -271,7 +271,7 @@ function DistCompelete(placeData) {
             for (var i = 0; i < idealChoiceCount; i++) {
                 var btn = document.createElement("BUTTON");
                 btn.setAttribute("id", "option"+i);
-                document.body.appendChild(btn);
+                document.getElementById('menu').appendChild(btn);
                 $("#option"+i).text(FormatText(shuffledPlaces[i]));
 
                 if (placeData.types.includes(shuffledPlaces[i])) {
@@ -287,8 +287,8 @@ function DistCompelete(placeData) {
     nextPlaceID = null;
 }
 function UpdateStats() {
-    $("#text").text("You have traveled " + Math.round(distanceMoved) + " blocks");
-    $("#resourceText").text(resources.food + " ration(s), " + resources.clothing + " clothes, $" + resources.cash + " in change,");
+    $("#text").text("Traveled " + Math.round(distanceMoved) + " units");
+    $("#resourceText").text(resources.food + " ration(s), " + resources.clothing + " clothes, $" + resources.cash + ", " + resources.fuel + " galons of fuel, " + resources.meds + " bandaids, " + data.knownLetters.length+"/26 letters known");
 }
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -303,12 +303,9 @@ function OptionPicked () {
         elem.parentNode.removeChild(elem);
     }
 }
-
-
 function OptionRight (event) {
     var placeData = event.data.placeData;
     var place = event.data.place;
-    console.log(place);
     OptionPicked ();
     var foundStuff = [];
     if (data.FoodPlaces.includes(place)) {
@@ -332,13 +329,14 @@ function OptionRight (event) {
         console.log(num);
         var oldLetter = data.unknownLetters[num];
         data.unknownLetters.splice(num);
-        foundStuff.push("learned the letter " + oldLetter);
+        data.knownLetters.push(oldLetter);
+        foundStuff.push("the letter " + oldLetter);
     }   
     if (data.FuelPlaces.includes(place)) {
         resources.fuel+=placeData.rating;
         foundStuff.push(placeData.rating + " fuel");
     }     
-    var foundText = " You found ";
+    var foundText = "found: ";
     if (foundStuff.length == 0) {
         foundText += "nothing!";
     }
@@ -351,11 +349,11 @@ function OptionRight (event) {
         } 
         foundText+=".";
     }     
-    $("#descText").text(FormatText(place) + ", of course. That which once was is now yours." + foundText);
+    $("#descText").text(FormatText(place) + ", oh of course! Look what I " + foundText + " Isn't that so cool!");
     UpdateStats();
 }
 function OptionWrong () {
-    $("#descText").text("No, it wasn't and never shall be. That which once was is gone now.");
+    $("#descText").text("Are you sure about that? Hmm not finding anything like that here!");
     OptionPicked ();
 }
 

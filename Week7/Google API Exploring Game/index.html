@@ -1,38 +1,55 @@
 <!DOCTYPE html> 
 <html> 
 <head>   
-<title>Geolocation</title>   
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">   
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="sketch.js"></script>
+  <title>Geolocation</title>   
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="sketch.js"></script>
   
-    <style>
+  <style>
 
       /* Always set the map height explicitly to define the size of the div
       * element that contains the map. */
       #map {
-      	height: 80%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-      	height: 100%;
-      	margin: 0;
-      	padding: 0;
-      }
-  </style>
+        float: left;
+        width:70%;
+        height: 100%;
+    }
+    #menu {
+/*        pointer-events:none;
+*/        float: left;       
+        width:28%;
+        margin:1%;
+
+    }
+    html, body {
+     height: 100%;
+     margin: 0;
+     padding: 0;
+    }
+    h1 {
+          font-size: 2vw;
+    }
+    button {
+                  font-size: 2vw;
+
+/*        width: 4vw;
+*/        height: 3vw;
+    }
+</style>
 </head>
 <body>
-	<div id="map"></div>
-    <h1 id="text">You are in a small town</h1>
-    <h1 id="resourceText">Food Counter: 0</h1>
-    <h1 id="descText"></h1> 
-<!--     <button id="option0">Click me</button>
-    <button id="option1">Click mer</button>
-    <button id="option2">Click mee</button>
-    <button id="option3">Click mee</button> -->
+    <div id="menu">
+      <h1 id="text">You are in a small town</h1>
+      <h1 id="resourceText"></h1>
+      <h1 id="descText"></h1> 
+  </div>
 
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAs6Ildd7UZGlrRdFnx5bRlpwAXJd-L62Y&libraries=places&callback=initMap">
+  <div id="map"></div>
+
+
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAs6Ildd7UZGlrRdFnx5bRlpwAXJd-L62Y&libraries=places&callback=initMap">
 </script>
 </body>
 </html>
