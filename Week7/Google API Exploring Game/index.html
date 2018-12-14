@@ -23,7 +23,8 @@ font-family: 'Roboto', sans-serif;
 */        float: left;       
         width:28%;
         margin:1%;
-
+    overflow-y:auto;
+       height:95%;
     }
     html, body {
      height: 100%;
@@ -39,6 +40,8 @@ font-family: 'Roboto', sans-serif;
         border: solid;
         color: white;  
         cursor:pointer;
+          display: block;
+           width: 100%;
 /*        width: 4vw;
 */      height: 3vw;
     }
@@ -52,8 +55,6 @@ font-family: 'Roboto', sans-serif;
   </div>
 
   <div id="map"></div>
-
-
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAs6Ildd7UZGlrRdFnx5bRlpwAXJd-L62Y&libraries=places&callback=initMap">
 </script>

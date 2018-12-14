@@ -401,13 +401,17 @@ function UntraslateText (text) {
     var newString = "";
     for (var i = 0; i < text.length; i++) {
         if (data.unknownLetters.includes (text[i].toUpperCase())) {
-            newString += "?";
+            //newString += "?";
+            newString += RandomLetter();
         }
         else {
-            newString += text[i];
+            newString += text[i].toLowerCase();
         }
     }
     return newString;
+}
+function RandomLetter () {
+    return data.unknownLetters[Math.round(Math.random()*(data.unknownLetters.length-1))];
 }
 function garbleText (text) {
     var newString = "";
