@@ -244,7 +244,7 @@ function moveMarker() {
         playerMarker.setPosition(latlng);
         if (nextPlaceID != null) {
             if (visitedPlaces.includes(nextPlaceID)) {
-                $("#text").text("Nothing left of value now.");
+                $("#text").text("We've been here before! Nothing left to find.");
                 DistCompelete(null);
             }
             else {
