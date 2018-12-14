@@ -1,7 +1,7 @@
 var data = [];
 var playerMoveMarker;
 var locationClicked;
-var text = "Hello! Yes hi!<br><br>Huh, looks like your connected!<br><br>I’m Eou. I just landed and was hoping you could give me some directions.<br><br>Know anywhere good?<br><br>I’m in the mode for some \"FOOD DAD\". Is that how you say it?<br><br>  Just use the mouse to give me directions by clicking on locations and I’ll start moving there.";
+var text = "Hello! Yes hi!<br><br>Huh, looks like your connected!<br><br>I’m Eou. I just landed and was hoping you could give me some directions.<br><br>Know anywhere good?<br><br>I’m in the mood for some \"FOOD DAD\". Is that how you say it?<br><br>  Just use the mouse to give me directions by clicking on locations and I’ll start moving there.";
 var numDeltas = 1000;
 var delay = 1; //milliseconds
 var deltaLat;
@@ -22,6 +22,7 @@ var idealChoiceCount = 4;
 var idealWrongCount = 1;
 
 var zoomLevel = 18;
+var markers = [];
 class Inventory {
     constructor(food, clothing,cash,fuel,meds) {
         this.food = food;
@@ -113,7 +114,7 @@ function initMap() {
             }],
         }]
     });
-    resources = new Inventory(10,1,5,0,2);
+    resources = new Inventory(0,1,5,0,2);
     placesService = new google.maps.places.PlacesService(map);
 
     infoWindow = new google.maps.InfoWindow;
@@ -128,8 +129,9 @@ function initMap() {
         icon:"PlayerSprite2.png",
         title: "Player char"
     });
+    markers.push(playerMarker);
     playerMarker.addListener('click', function(event) {
-        infoWindow.open(map, playerMarker);
+        //infoWindow.open(map, playerMarker);
     });
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -141,7 +143,7 @@ function initMap() {
 
             infoWindow.setPosition({ lat:position.coords.latitude+.00005,lng:pos.lng});
             //infoWindow.setContent('Location found. You are at: ' + position.coords.latitude + ", " + position.coords.longitude);
-            infoWindow.open(map);
+            //infoWindow.open(map);
             map.setCenter(pos);
             playerMarker.setPosition(pos);
             currentPosition = [pos.lat, pos.lng];
@@ -182,12 +184,14 @@ function transition(event) {
     if (playerMoveMarker) {
         playerMoveMarker.setMap(null);
     }
+    if (markers.length > 1) markers.pop(markers[markers.length-1]);
     playerMoveMarker = new google.maps.Marker({
         position: event.latLng,
         map: map,
         label: "",
         title: "Moving To"
     });
+    markers.push(playerMoveMarker);
     newInf = new google.maps.InfoWindow({
         position: event.latLng,
         content: "HE::"
@@ -207,6 +211,8 @@ function transition(event) {
 
 }
 var lastDist = Infinity;
+var units;
+var distanceConsume = 0;
 function moveMarker() {
     currentPosition[0] += deltaLat;
     currentPosition[1] += deltaLng;
@@ -219,6 +225,12 @@ function moveMarker() {
     distanceMoved += dist;
     // $( "#text" ).text("You have traveled " + Math.round(distanceMoved/70) + " miles");
     UpdateStats();
+    distanceConsume +=dist;
+    console.log(distanceConsume);
+    if (distanceConsume > 1) {
+        ConsumeResources();
+        distanceConsume=0;
+    } 
     if (dist > lastDist) {
         lastDist = Infinity;
         var latlng = new google.maps.LatLng(newPosition[0], newPosition[1]);
@@ -242,9 +254,21 @@ function moveMarker() {
     }
 }
 var visitedPlaces = [];
+
+function ConsumeResources () {
+    if(resources.food>0){
+        resources.food--;
+    }
+    if(resources.fuel>0){
+        resources.fuel--;
+    }  
+  
+}
 function DistCompelete(placeData) {
+    markers[1].setMap(null);
+
     if (placeData != null) {
-           
+
         if (placeData.reviews != null) {
             $("#descText").html("Oh you pulled up some data on this place great?<br>\[*DATA CORRUPTED*\]<br>" + (UntraslateText(placeData.reviews[0].text)).italics() + "<br>Umm, what is this place anyway?".bold());
            // $("#descText").text("You also found a echo from the old world:" + garbleText(placeData.reviews[0].text) + "I think this place used to be a...");
@@ -273,7 +297,6 @@ function DistCompelete(placeData) {
                 btn.setAttribute("id", "option"+i);
                 document.getElementById('menu').appendChild(btn);
                 $("#option"+i).text(FormatText(shuffledPlaces[i]));
-
                 if (placeData.types.includes(shuffledPlaces[i])) {
                     $("#option"+i).click({place: shuffledPlaces[i],placeData:placeData}, OptionRight);
                 }
@@ -287,8 +310,8 @@ function DistCompelete(placeData) {
     nextPlaceID = null;
 }
 function UpdateStats() {
-    $("#text").text("Traveled " + Math.round(distanceMoved) + " units");
-    $("#resourceText").text(resources.food + " ration(s), " + resources.clothing + " clothes, $" + resources.cash + ", " + resources.fuel + " galons of fuel, " + resources.meds + " bandaids, " + data.knownLetters.length+"/26 letters known");
+    $("#text").text("Traveled " + Math.floor(distanceMoved) + " units");
+    $("#resourceText").html(resources.food + " morsels of food<br>" + resources.clothing + " pairs of clothing<br>$" + resources.cash + "<br>" + resources.fuel + " galons of fuel<br>" + resources.meds + " bandaids<br>" + data.knownLetters.length+"/26 letters known");
 }
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -309,6 +332,7 @@ function OptionRight (event) {
     OptionPicked ();
     var foundStuff = [];
     if (data.FoodPlaces.includes(place)) {
+        //if (!isNaN(resources.food)) resources.food =0;
         resources.food +=placeData.rating;
         foundStuff.push(placeData.rating + " cans of food");
     }

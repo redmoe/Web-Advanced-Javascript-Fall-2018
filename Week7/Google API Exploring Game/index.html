@@ -1,15 +1,18 @@
 <!DOCTYPE html> 
 <html> 
 <head>   
-  <title>Geolocation</title>   
+  <title>An Alien's Journey Through Reviews Assited By a Map App Controlled by You</title>   
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="sketch.js"></script>
-  
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <style>
 
       /* Always set the map height explicitly to define the size of the div
       * element that contains the map. */
+     * {
+font-family: 'Roboto', sans-serif;
+  }
       #map {
         float: left;
         width:70%;
@@ -28,13 +31,16 @@
      padding: 0;
     }
     h1 {
-          font-size: 2vw;
+        font-size: 1.5vw;
     }
     button {
-                  font-size: 2vw;
-
+        font-size: 2vw;
+        background-color: #000000;
+        border: solid;
+        color: white;  
+        cursor:pointer;
 /*        width: 4vw;
-*/        height: 3vw;
+*/      height: 3vw;
     }
 </style>
 </head>
