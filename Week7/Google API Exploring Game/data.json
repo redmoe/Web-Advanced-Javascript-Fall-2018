@@ -93,7 +93,7 @@
 
 	],
 	"FoodPlaces":["bar","restaurant","meal_takeaway","meal_delivery","cafe","convenience_store","bakery"],
-	"CashPlaces":["bank","accounting","jewelry_store","real_estate_agency","atm","lawyer"],
+	"CashPlaces":["bank","accounting","jewelry_store","real_estate_agency","atm","lawyer","establishment"],
 	"FuelPlaces":["parking","bus_station","car_dealer","car_rental","car_repair","car_wash","subway_station","taxi_stand","train_station","transit_station","airport","gas_station"],
 	"ClothingPlaces":["department_store","laundry","shopping_mall","shoe_store","store","clothing_store","home_goods_store"],
 	"WordPlaces":["book_store","library","school","post_office","art_gallery","point_of_interest"],

@@ -9,7 +9,7 @@ var numDeltas = 1000;
 var delay = 1; //milliseconds
 var deltaLat;
 var deltaLng;
-var moveSpeed = 0.000001;
+var moveSpeed = 0.000002;
 var currentPosition = [0, 0];
 var newPosition = [0, 0];
 var map, infoWindow;
@@ -26,6 +26,14 @@ var idealWrongCount = 1;
 
 var zoomLevel = 18;
 var markers = [];
+
+var lastDist = Infinity;
+var units;
+var distanceConsume = 0;
+
+
+var visitedPlaces = [];
+
 class Inventory {
     constructor(food, clothing,cash,fuel,meds) {
         this.food = food;
@@ -52,9 +60,9 @@ class Inventory {
 function initMap() {
     loadJSON(function(response) {
         data = JSON.parse(response);
-        console.log(data.PlaceList);
+    //    console.log(data.PlaceList);
     });
-    $("#text").html(text);
+    $("#topText").html(text);
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: -34.397,
@@ -108,10 +116,19 @@ function initMap() {
             stylers: [{
                 visibility: "on"
             }]
-        },        
+        }, {
+            featureType: "poi",
+            elementType: "labels.icon",
+            stylers: [{
+                visibility: "on",
+                icon:"PlayerSprite2.png",
+                "color": "#99FF33"
+            }]
+        },              
         {
             featureType: "poi",
             elementType: "labels.text",
+
             stylers: [{
                 visibility: "off"
             }],
@@ -172,7 +189,7 @@ function initMap() {
     map.setOptions({gestureHandling:"none",zoomControl:false});
 }
 function FormatText (textr) {
-    console.log(textr);
+    //console.log(textr);
     textr = textr.replace(/_/g, " ")
     textr = textr.charAt(0).toUpperCase() + textr.slice(1);
     return textr;
@@ -185,7 +202,7 @@ function Distance(pointA, pointB) {
 }
 function transition(event) {
     OptionPicked ();
-     $("#descText").text("");
+     $("#bottomText").text("");
 
 
     if (playerMoveMarker) {
@@ -217,9 +234,7 @@ function transition(event) {
     moveMarker();
 
 }
-var lastDist = Infinity;
-var units;
-var distanceConsume = 0;
+
 function moveMarker() {
     currentPosition[0] += deltaLat;
     currentPosition[1] += deltaLng;
@@ -233,7 +248,7 @@ function moveMarker() {
     // $( "#text" ).text("You have traveled " + Math.round(distanceMoved/70) + " miles");
     UpdateStats();
     distanceConsume +=dist;
-    console.log(distanceConsume);
+    ///console.log(distanceConsume);
     if (distanceConsume > 1) {
         ConsumeResources();
         distanceConsume=0;
@@ -244,7 +259,7 @@ function moveMarker() {
         playerMarker.setPosition(latlng);
         if (nextPlaceID != null) {
             if (visitedPlaces.includes(nextPlaceID)) {
-                $("#text").text("We've been here before! Nothing left to find.");
+                $("#topText").text("We've been here before! Nothing left to find.");
                 DistCompelete(null);
             }
             else {
@@ -260,7 +275,15 @@ function moveMarker() {
         moving = setTimeout(moveMarker, delay);
     }
 }
-var visitedPlaces = [];
+
+
+
+function addMarker(myPos,myTitle,myInfo) {
+
+  var marker = new google.maps.Marker({
+         icon:"PlayerSprite2.png",
+  });
+}
 
 function ConsumeResources () {
     if(resources.food>0){
@@ -274,20 +297,25 @@ function ConsumeResources () {
 function DistCompelete(placeData) {
     markers[1].setMap(null);
     if (placeData != null) {
-            var endr = "";
+           // var endr = "";
             if (placeData.reviews != null) {
-                endr+=("Oh you pulled up some data on this place great?<br>\[*DATA CORRUPTED*\]<br>" + (UntraslateText(placeData.reviews[0].text)).italics() + "<br>Umm, what is this place anyway?".bold());
+                $("#topText").html("Oh you pulled up some data on this place great?<br>\[*DATA CORRUPTED*\]");
+                $("#dataText").html(UntraslateText(placeData.reviews[0].text));
+                $("#bottomText").html( "<br>Umm, what is this place anyway?".bold());
+
+
+               // endr+=("Oh you pulled up some data on this place great?<br>\[*DATA CORRUPTED*\]<br>" + (UntraslateText(placeData.reviews[0].text)).italics() + "<br>Umm, what is this place anyway?".bold());
             }
             else {
-                endr+=("Hm, seems like no one felt like leaving a review. Ok well the name was<br>\[*DATA CORRUPTED*\]<br>" + (UntraslateText(placeData.name)).italics() + "<br>Umm, what is this place anyway?".bold());
+                 $("#topText").html= ("Hm, seems like no one felt like leaving a review. Ok well the name was<br>\[*DATA CORRUPTED*\]<br>" + (UntraslateText(placeData.name)).italics() + "<br>Umm, what is this place anyway?".bold());
 
             }
             if (message!=false) {
-                 endr +="<br><br>"+message;
+               $("#bottomText").html(message);
                  message=false;
             }
-            $("#descText").html(endr);
-           // $("#descText").text("You also found a echo from the old world:" + garbleText(placeData.reviews[0].text) + "I think this place used to be a...");
+      //      $("#bottomText").html(endr);
+           // $("#bottomText").text("You also found a echo from the old world:" + garbleText(placeData.reviews[0].text) + "I think this place used to be a...");
           
             var shuffledPlaces = shuffle(placeData.types);
             var wrongA = 1;
@@ -298,12 +326,12 @@ function DistCompelete(placeData) {
             else
                 shuffledPlaces.Length = idealChoiceCount;
             while (wrongA > 0) {
-                console.log(data);
+              //  console.log(data);
                 var randomPlace = data.PlaceList[Math.round(Math.random()*data.PlaceList.length)];
                 if (!shuffledPlaces.includes(randomPlace)) {
                     shuffledPlaces.push(randomPlace);
                     wrongA--;
-                    console.log(randomPlace);
+                 //   console.log(randomPlace);
                 }
             }
             for (var i = 0; i < idealChoiceCount; i++) {
@@ -324,8 +352,17 @@ function DistCompelete(placeData) {
     nextPlaceID = null;
 }
 function UpdateStats() {
-    $("#text").text("Traveled " + Math.floor(distanceMoved) + " units");
-    $("#resourceText").html(resources.food + " morsels of food<br>" + resources.clothing + " pairs of clothing<br>$" + resources.cash + "<br>" + resources.fuel + " galons of fuel<br>" + resources.meds + " bandaids<br>" + data.knownLetters.length+"/26 letters known");
+    $("#topText").text("Traveled " + Math.floor(distanceMoved) + " units");
+    //$("#resourceText").html("🍔"+resources.food + " morsels of food<br>" + resources.clothing + " pairs of clothing<br>$" + resources.cash + "<br>" + resources.fuel + " galons of fuel<br>" + resources.meds + " bandaids<br>" + data.knownLetters.length+"/26 letters known");
+  
+    $("#resourceText").html("🍔 "+resources.food + 
+                            "<br>👕 " + resources.clothing + 
+                            "<br>💵 " + resources.cash + 
+                            "<br>⛽ " + resources.fuel + 
+                            "<br>🏥️ " + resources.meds + 
+                            "<br>🔤 " + data.knownLetters.length+"/26 letters known");
+//🍔<br>🏥<br>⛽<br>👕<br>💵 
+
 }
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -365,10 +402,11 @@ function OptionRight (event) {
     }     
     if (data.WordPlaces.includes(place)) {
         var num = Math.floor(Math.random()*data.unknownLetters.length) ;
-        console.log(num);
         var oldLetter = data.unknownLetters[num];
-        data.unknownLetters.splice(num);
+        data.unknownLetters.splice(num,1);
         data.knownLetters.push(oldLetter);
+               console.log(oldLetter);
+
         foundStuff.push("the letter " + oldLetter);
     }   
     if (data.FuelPlaces.includes(place)) {
@@ -388,12 +426,12 @@ function OptionRight (event) {
         } 
         foundText+=".";
     }     
-    $("#descText").html(FormatText(place) + ", oh of course! Look what I " + foundText + " Isn't that so cool!");
+    $("#bottomText").html(FormatText(place) + ", oh of course! Look what I " + foundText + " Isn't that so cool!");
     
     UpdateStats();
 }
 function OptionWrong () {
-    $("#descText").text("Are you sure about that? Hmm not finding anything like that here!");
+    $("#bottomText").text("Are you sure about that? Hmm not finding anything like that here!");
     OptionPicked ();
 }
 
@@ -404,7 +442,7 @@ function UntraslateText (text) {
             newString += RandomLetter();
         }
         else {
-            newString += text[i];
+            newString += text[i].toLowerCase();
         }
     }
     return newString;
